@@ -135,8 +135,8 @@
     background-color: #B8C1CB;
     padding: 4px 6px;
     border-radius: 12px;
+    cursor: pointer;
     font-size: 14px;
-    white-space: 'nowrap';
 }
 .active-chips{
     color: #fff;;
@@ -144,9 +144,12 @@
     padding: 4px 6px;
     border-radius: 12px;
     font-size: 14px;
-    white-space: 'nowrap';
 }
 
-.chips:hover { 
-    cursor: 'pointer'
+.active-search{
+    color: #fff;
+    background-color: #2bbbad!important;
+    outline: none !important;
+    border-color: #FFF;
 }
+

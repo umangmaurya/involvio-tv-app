@@ -1,49 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Favourite, FavouriteRed } from '../imageMapping';
-import { SearchShows } from '../Utils/http.util';
+import { useTvShowHook } from './Hooks/useTvShow.hook';
 
 
 const TvShows = () => {
 
-    const [shows, setShowList] = useState([]);
-
-    const [search, setSearch] = useState('arrrow');// arrow is default search term here
-
-    const [isFav, setIsFav] = useState(false);
-
-    useEffect(() => {
-        getShows();
-    }, []);
-
-    const getShows = async () => {
-        if (search == '') {
-            alert('Please enter search keyword');
-            return;
-        }
-        const result = await SearchShows(search) || [];
-        if (result.length) {
-            setShowList(result);
-            setIsFav(false)
-        } else {
-            setShowList([]);
-            setIsFav(false)
-        }
-
-    }
-
-    const addToFav = (index) => {
-        const newlist = [...shows];
-        newlist[index].isFavourite = !newlist[index].isFavourite;
-        setShowList(newlist);
-    }
-
-    let showItems = shows;
-    if (isFav) {
-        showItems = shows.filter(item => item.isFavourite);
-    } else {
-        showItems = shows;
-    }
-
+    const { search, setSearch, setIsFav, isFav, getShows, showItems, addToFav } = useTvShowHook();
 
     return (<div className='col-flex'>
         <nav className="navbar navbar-expand-lg navbar-light default-color">
@@ -51,15 +13,14 @@ const TvShows = () => {
                 <a className="navbar-brand" href="#">Involvio Tv shows app</a>
                 <div className="" id="navbarSupportedContent">
                     <div className="d-flex">
-                        <input className="form-control me-2" placeholder="type to search"
+                        <input id='searchElem' className="form-control me-2" placeholder="type to search"
                             value={search} onChange={(e) => setSearch(e.target.value)} aria-label="Search" />
-                        <button className="btn btn-outline-success" onClick={getShows} >Search</button>
+                        <button className={`btn btn-outline-success ${search ? 'active-search' : ''}`} onClick={getShows} >Search</button>
                     </div>
                 </div>
             </div>
         </nav>
         <div className='row-flex p-4'>
-
             <div className={`chips ${!isFav ? 'active-chips' : ''} `} onClick={() => setIsFav(false)} >
                 <span >All  </span>
             </div>
@@ -82,7 +43,7 @@ const TvShows = () => {
                                 <div className='card-body'>
                                     <div className='row-flex w-full justify-between '>
                                         <span className='text-left' >{name}</span>
-                                        <img style={{ width: '24px' }} onClick={() => addToFav(index)} src={isFavourite ? FavouriteRed() : Favourite()} alt={isFavourite ? 'fav' : 'No fav'} />
+                                        <img style={{ width: '24px' }} onClick={() => addToFav(id)} src={isFavourite ? FavouriteRed() : Favourite()} alt={isFavourite ? 'fav' : 'No fav'} />
                                     </div>
                                     <div className='row-flex w-full justify-between'>
                                         <span className='description' >Average Rating : {average}</span>
@@ -92,7 +53,7 @@ const TvShows = () => {
                             </div>
                         )
                     })
-                    : <div className='text-center col-flex'> No data found</div>
+                    : <div className='text-center col-flex p-4'> No data found </div>
             }
         </div>
     </div>)
