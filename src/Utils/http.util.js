@@ -1,6 +1,6 @@
 /* Initilalize constants */
 const CONTENT_TYPE = 'application/json';
-const API_END_POINT = 'http://api.tvmaze.com/';
+const API_END_POINT = 'https://api.tvmaze.com/';
 const SHOWS_LIST_URL = 'search/shows?q=';
 
 
