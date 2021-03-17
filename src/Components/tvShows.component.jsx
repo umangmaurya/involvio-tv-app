@@ -1,6 +1,6 @@
 import React from 'react';
-import { Favourite, FavouriteRed } from '../imageMapping';
 import { useTvShowHook } from './Hooks/useTvShow.hook';
+import MovieCard from './Movie-Card/movieCard';
 
 
 const TvShows = () => {
@@ -8,7 +8,7 @@ const TvShows = () => {
     const { search, setSearch, setIsFav, isFav, getShows, showItems, addToFav } = useTvShowHook();
 
     return (<div className='col-flex'>
-        <nav className="navbar navbar-expand-lg navbar-light default-color">
+        <nav className="navbar rounded navbar-expand-lg navbar-light default-color">
             <div className="container-fluid">
                 <a className="navbar-brand" href="#">Involvio Tv shows app</a>
                 <div className="" id="navbarSupportedContent">
@@ -32,25 +32,21 @@ const TvShows = () => {
         <div className='row-flex flex-wrap' >
             {
                 showItems.length ?
-                    showItems.map((item, index) => {
+                    showItems.map((item) => {
                         const { show, isFavourite = false } = item || {};
-                        const { id, image, rating, name = '', officialSite = 'dsad', summary } = show || {};
+                        const { id, image, rating, name = '', officialSite } = show || {};
                         const average = rating && rating.average ? rating.average : 'NA'
                         const { medium = 'https://jtride-uat-data.s3.ap-south-1.amazonaws.com/public/0.3111172231906917.png' } = image || {}
                         return (
-                            <div key={id} className="card m-4" style={{ width: '18rem' }}>
-                                <img src={medium} className="card-img-top" alt={officialSite} />
-                                <div className='card-body'>
-                                    <div className='row-flex w-full justify-between '>
-                                        <span className='text-left' >{name}</span>
-                                        <img style={{ width: '24px' }} onClick={() => addToFav(id)} src={isFavourite ? FavouriteRed() : Favourite()} alt={isFavourite ? 'fav' : 'No fav'} />
-                                    </div>
-                                    <div className='row-flex w-full justify-between'>
-                                        <span className='description' >Average Rating : {average}</span>
-                                    </div>
-                                </div>
-
-                            </div>
+                            <MovieCard image_url={medium}
+                                name={name}
+                                addToFav={addToFav}
+                                key={id}
+                                id={id}
+                                officialSite={officialSite}
+                                isFavourite={isFavourite}
+                                average={average}
+                            />
                         )
                     })
                     : <div className='text-center col-flex p-4'> No data found </div>
